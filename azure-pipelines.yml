@@ -1,0 +1,19 @@
+variables:
+  buildConfiguration: 'Release'
+
+pool:
+  vmImage: 'ubuntu-18.04' # examples of other options: 'macOS-10.15', 'windows-2019'
+
+steps:
+- script: dotnet build --configuration $(buildConfiguration)
+  displayName: 'dotnet build $(buildConfiguration)'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: true
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'AZ-400-Service-Connection'
+    appType: 'webAppLinux'
+    appName: 'AZ-400-MVC-Pipe-One'
+    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
