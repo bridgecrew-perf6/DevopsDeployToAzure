@@ -11,9 +11,8 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: true
-- task: AzureWebApp@1
+    arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+- task: PublishPipelineArtifact@1
   inputs:
-    azureSubscription: 'AZ-400-Service-Connection'
-    appType: 'webAppLinux'
-    appName: 'AZ-400-MVC-Pipe-One'
-    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    targetPath: '$(Build.ArtifactStagingDirectory)'
+    publishLocation: 'pipeline'
